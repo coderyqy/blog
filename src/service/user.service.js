@@ -11,6 +11,14 @@ class UserService {
 
     return result
   }
+
+  async getUserByName (name) {
+    console.log("准备查询")
+    const statement = `SELECT * FROM users where name = ?;`
+    const result = await connection.execute(statement, [name])
+
+    return result[0]
+  }
 }
 
 module.exports = new UserService()
