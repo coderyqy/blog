@@ -13,6 +13,7 @@
   "dependencies": {
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^10.0.0",
