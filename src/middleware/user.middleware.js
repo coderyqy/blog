@@ -1,24 +1,22 @@
 const service = require("../service/user.service")
 const md5password = require("../utils/password-handle")
+const errorType = require('../constants/error-type')
 
 const verifyUser = async (ctx, next) => {
   let { name, password } = ctx.request.body // 获取数据
   name = name.replace(/\s/g, '')
   password = password.replace(/\s/g, '')
+
   if (!name || !password || name === '' || password === '') { // 非空判断
-    ctx.body = "信息不能为空"
-    return
+    const error = new Error(errorType.NAME_OR_PASSWORD_IS_REQUIRED)
+    return ctx.app.emit('error', error, ctx)
   }
 
   const result = await service.getUserByName(name)
-  console.log("result")
-  console.log(result.length)
-
   if (result.length) {
-    ctx.body = "已经注册"
-    return
+    const error = new Error(errorType.USER_ALREADY_EXISTS)
+    return ctx.app.emit('error', error, ctx)
   }
-  // ctx.request.body.uid = result.id
   await next()
 }
 
@@ -27,8 +25,8 @@ const verifyUserLogin = async (ctx, next) => {
   name = name.replace(/\s/g, '')
   password = password.replace(/\s/g, '')
   if (!name || !password || name === '' || password === '') { // 非空判断
-    ctx.body = "信息不能为空"
-    return
+    const error = new Error(errorType.NAME_OR_PASSWORD_IS_REQUIRED)
+    return ctx.app.emit('error', error, ctx)
   }
 
   const result = await service.getUserByName(name)
@@ -39,10 +37,8 @@ const verifyUserLogin = async (ctx, next) => {
     // 用户存在
     await next()
   } else {
-    ctx.body = {
-      code: 404,
-      msg: "用户不存在"
-    }
+    const error = new Error(errorType.USER_NOT_EXISTS)
+    return ctx.app.emit('error', error, ctx)
   }
 }
 

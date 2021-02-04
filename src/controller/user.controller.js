@@ -6,12 +6,9 @@ class UserController {
     // 获取用户请求的数据
     const user = ctx.request.body
     try {
-      // 查询数据
       const result = await userService.create(user)
-      // 返回数据
-      console.log(user)
       ctx.body = {
-        code: 1,
+        status: 1,
         msg: "注册成功",
         name: user.name,
         uid: user.uid
