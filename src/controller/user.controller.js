@@ -1,4 +1,5 @@
 const userService = require('../service/user.service')
+const { PRIVATE_KEY, PUBLIC_KEY } = require('../app/config')
 const jwt = require('jsonwebtoken')
 
 class UserController {
@@ -20,16 +21,14 @@ class UserController {
   }
 
   async login (ctx, next) {
-    // 1.验证用户名和密码是否为空
-    // 2.加密密码,对不对的上
-    const user = ctx.request.body
-    const result = await userService.getUserByName(user.name)
-    console.log(result[0].password)
-    if (result.length) {
-      if (result[0].password == user.password) {
-        // 3.返回用户信息和token
-      }
-    }
+    const { id, name } = ctx.user
+    const token = jwt.sign({ id, name }, PRIVATE_KEY, {
+      expiresIn: 60 * 60 * 24, // 有效时间(秒)
+      algorithm: "RS256" // 加密算法, 默认是HS256
+    })
+
+    ctx.body = { id, name, token }
+    await next()
   }
 }
 

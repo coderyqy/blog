@@ -30,16 +30,20 @@ const verifyUserLogin = async (ctx, next) => {
   }
 
   const result = await service.getUserByName(name)
-  console.log("result")
-  console.log(result.length)
-
-  if (result.length) {
-    // 用户存在
-    await next()
-  } else {
+  console.log(result)
+  const user = result
+  if (!result.length) {
     const error = new Error(errorType.USER_NOT_EXISTS)
     return ctx.app.emit('error', error, ctx)
   }
+
+  const reqPassword = md5password(password)
+  if (reqPassword != user[0].password) {
+    const error = new Error(errorType.USER_INFO_ERROR)
+    return ctx.app.emit('error', error, ctx)
+  }
+  ctx.user = user[0]
+  await next()
 }
 
 // 调用加密方法
