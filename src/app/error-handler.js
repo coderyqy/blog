@@ -2,7 +2,6 @@ const errorTypes = require('../constants/error-type')
 
 const errorHandler = (error, ctx) => {
   let status, message
-
   console.log(error.message)
   switch (error.message) {
     case errorTypes.NAME_OR_PASSWORD_IS_REQUIRED:
@@ -35,7 +34,10 @@ const errorHandler = (error, ctx) => {
       break
   }
   ctx.status = status
-  ctx.body = message
+  ctx.body = {
+    status: status,
+    msg: message
+  }
 }
 
 module.exports = errorHandler
