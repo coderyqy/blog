@@ -14,8 +14,6 @@ class UserService {
     // 根据 用户名 查询数据库
     const statement = `SELECT * FROM users WHERE name = ?;`
     const result = await connection.execute(statement, [name])
-    console.log("getUserByName", name)
-    console.log(result[0])
     return result[0]
   }
 }

@@ -26,7 +26,6 @@ class UserController {
       expiresIn: 60 * 60 * 24, // 有效时间(秒)
       algorithm: "RS256" // 加密算法, 默认是HS256
     })
-
     ctx.body = { id, name, token }
     await next()
   }

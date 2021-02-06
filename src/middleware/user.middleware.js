@@ -3,7 +3,7 @@ const md5password = require("../utils/password-handle")
 const errorType = require('../constants/error-type')
 
 const verifyUser = async (ctx, next) => {
-  let { name, password } = ctx.request.body // 获取数据
+  let { name, password } = ctx.request.body // 
   name = name.replace(/\s/g, '')
   password = password.replace(/\s/g, '')
 
@@ -30,7 +30,7 @@ const verifyUserLogin = async (ctx, next) => {
   }
 
   const result = await service.getUserByName(name)
-  console.log(result)
+
   const user = result
   if (!result.length) {
     const error = new Error(errorType.USER_NOT_EXISTS)
