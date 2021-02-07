@@ -33,7 +33,7 @@ const errorHandler = (error, ctx) => {
       message = "Not Found"
       break
   }
-  ctx.status = status
+  // ctx.status = status
   ctx.body = {
     status: status,
     msg: message
