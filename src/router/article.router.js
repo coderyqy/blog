@@ -5,6 +5,6 @@ const { verifyAuth } = require("../middleware/auth.middleware")
 
 const articleRouter = new Router({ prefix: "/article" })
 
-articleRouter.post('/', verifyAuth, create)
+articleRouter.post('/save', verifyAuth, create)
 
 module.exports = articleRouter
