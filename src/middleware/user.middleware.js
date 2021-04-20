@@ -3,6 +3,7 @@ const md5password = require("../utils/password-handle")
 const errorType = require('../constants/error-type')
 
 const verifyUser = async (ctx, next) => {
+  console.log('---------')
   let { name, password } = ctx.request.body // 
   name = name.replace(/\s/g, '')
   password = password.replace(/\s/g, '')
@@ -21,6 +22,7 @@ const verifyUser = async (ctx, next) => {
 }
 
 const verifyUserLogin = async (ctx, next) => {
+  console.log('---------')
   let { name, password } = ctx.request.body // 获取数据
   name = name.replace(/\s/g, '')
   password = password.replace(/\s/g, '')

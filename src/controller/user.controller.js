@@ -21,6 +21,7 @@ class UserController {
   }
 
   async login (ctx, next) {
+    console.log("------------")
     const { id, name } = ctx.user
     const token = jwt.sign({ id, name }, PRIVATE_KEY, {
       expiresIn: 60 * 60 * 24, // 有效时间(秒)

@@ -2,6 +2,7 @@ const articleService = require("../service/article.service")
 
 class ArticleController {
   async create (ctx, next) {
+    console.log("123123-----")
     const { title, content } = ctx.request.body
     const userId = ctx.user.id
     try {
@@ -19,7 +20,6 @@ class ArticleController {
   async getAllArticle (ctx, next) {
     try {
       const result = await articleService.getAllArticle()
-      console.log(result)
       ctx.body = {
         result
       }
@@ -33,9 +33,28 @@ class ArticleController {
     try {
       const result = await articleService.getArticle(id)
       ctx.body = {
-        result
+        result: result[0]
       }
     } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async update (ctx, next) {
+    const { id } = ctx.params
+    const { title, content } = ctx.request.body
+    console.log(content)
+    try {
+      const result = await articleService.update(id, title, content)
+      ctx.body = {
+        status: 200,
+        message: "修改成功！"
+      }
+    } catch (error) {
+      ctx.body = {
+        status: 400,
+        message: "修改失败！"
+      }
       console.log(error)
     }
   }

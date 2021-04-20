@@ -12,7 +12,6 @@ const verifyAuth = async (ctx, next) => {
     return ctx.app.emit('error', error, ctx)
   }
   const token = authorization.replace('Bearer ', '')
-  console.log(token)
   // 2.用公钥进行解密
   try {
     const result = jwt.verify(token, config.PUBLIC_KEY, {
