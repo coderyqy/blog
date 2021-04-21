@@ -22,11 +22,17 @@ class ArticelService {
     return result
   }
 
-  // 
+  // 修改文章
   async update (id, title, content, image, mimetype) {
-    console.log(id, title, content, image, mimetype)
     const statement = `UPDATE article SET title = ?, content = ?, image = ?, mimetype = ? WHERE id = ?`
     const result = await connection.execute(statement, [title, content, image, mimetype, id])
+    return result
+  }
+
+  // 删除文章
+  async deleteArticle (articleId) {
+    const statement = `DELETE FROM article WHERE id = ?`
+    const result = await connection.execute(statement, [articleId])
     return result
   }
 }
