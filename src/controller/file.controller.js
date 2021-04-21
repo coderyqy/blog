@@ -22,12 +22,32 @@ class FileController {
 
   async savePictureInfo (ctx, next) {
     // 1.获取图像信息
-    console.log("savePictureInfo")
-    console.log(ctx.req.file)
+    const files = ctx.req.files
+    const { articleId } = ctx.params
 
-    ctx.body = '动态配图上传完成~'
+    const { filename, mimetype, size } = files[0]
+
+    await fileService.createFile(filename, mimetype, size, articleId)
+
+    ctx.body = {
+      status: 200,
+      imgUrl: `http://localhost:8888/article/image/${filename}`,
+    }
   }
 
+  async saveMainPicture (ctx, next) {
+    console.log("正在处理图片")
+    // 1.获取图像信息
+    const files = ctx.req.file
+
+    const { filename, mimetype } = files
+
+    ctx.body = {
+      status: 200,
+      imgUrl: filename,
+      mimetype: mimetype
+    }
+  }
 }
 
 module.exports = new FileController()
