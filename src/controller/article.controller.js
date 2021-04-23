@@ -2,17 +2,30 @@ const fs = require('fs')
 
 const articleService = require("../service/article.service")
 const fileService = require("../service/file.service")
+const labelService = require("../service/label.service")
 const { PICTURE_PATH, MAIN_PICTURE_PATH } = require('../constants/file-path')
 
 class ArticleController {
   async create (ctx, next) {
-    const { title, content, filename, mimetype } = ctx.request.body
+    const { title, condec, content, filename, mimetype, checkList } = ctx.request.body
     const userId = ctx.user.id
     try {
-      const result = await articleService.create(title, content, filename, mimetype, userId)
+      // 插入文章
+      const result = await articleService.create(title, condec, content, filename, mimetype, userId)
+      const articleId = result[0].insertId
+
+      // 设置所属标签
+      let labelNameInfo = ''
+      let labelNameId = ''
+      for (let name of checkList) {
+        labelNameInfo = await labelService.getLabelByName(name)
+        labelNameId = labelNameInfo[0].id
+        labelService.setArticleLabel(articleId, labelNameId, name)
+      }
+      // 返回信息
       ctx.body = {
-        status: 1,
-        msg: "保存成功",
+        status: 200,
+        message: "保存成功",
       }
     } catch (error) {
       console.log(error)
@@ -44,10 +57,10 @@ class ArticleController {
 
   async update (ctx, next) {
     const { id } = ctx.params
-    const { title, content, filename, mimetype } = ctx.request.body
+    const { title, condec, content, filename, mimetype } = ctx.request.body
     console.log(content)
     try {
-      const result = await articleService.update(id, title, content, filename, mimetype)
+      const result = await articleService.update(id, title, condec, content, filename, mimetype)
       ctx.body = {
         status: 200,
         message: "修改成功！"
@@ -103,6 +116,7 @@ class ArticleController {
     ctx.response.set('content-type', fileInfo.mimetype)
     ctx.body = fs.createReadStream(`${MAIN_PICTURE_PATH}/${filename}`)
   }
+
 }
 
 module.exports = new ArticleController()

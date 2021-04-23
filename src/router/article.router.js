@@ -1,6 +1,16 @@
 const Router = require("koa-router")
 
-const { create, getAllArticle, getArticle, update, deleteArticle, fileInfo, fileAddInfo, fileInfoMainPicture } = require("../controller/article.controller")
+const {
+  create,
+  getAllArticle,
+  getArticle,
+  update,
+  deleteArticle,
+  fileInfo,
+  fileAddInfo,
+  fileInfoMainPicture
+} = require("../controller/article.controller")
+
 const { verifyAuth } = require("../middleware/auth.middleware")
 
 const articleRouter = new Router({ prefix: "/article" })
@@ -8,9 +18,9 @@ const articleRouter = new Router({ prefix: "/article" })
 // 增加文章
 articleRouter.post('/save', verifyAuth, create)
 // 获取所有文章
-articleRouter.get('/', verifyAuth, getAllArticle)
+articleRouter.get('/', getAllArticle)
 // 获取单篇文章
-articleRouter.get('/:id/getArticle', verifyAuth, getArticle)
+articleRouter.get('/:id/getArticle', getArticle)
 // 更新文章
 articleRouter.post('/update/:id', verifyAuth, update)
 // 删除文章
