@@ -4,6 +4,7 @@ const {
   create,
   getAllArticle,
   getArticle,
+  getArticleByLabelName,
   update,
   deleteArticle,
   fileInfo,
@@ -31,5 +32,7 @@ articleRouter.get('/image/:filename', fileInfo)
 articleRouter.get('/imageadd/:filename', fileAddInfo)
 // 获取文章主图
 articleRouter.get('/theme/:filename', fileInfoMainPicture)
+// 根据标签名获取文章_query
+articleRouter.get('/label', getArticleByLabelName)
 
 module.exports = articleRouter

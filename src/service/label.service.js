@@ -21,6 +21,14 @@ class LabelService {
     const result = await connection.execute(statement, [articleId, labelId, name])
     return result
   }
+
+  // 根据标article_id和label_id获取标签信息
+  async getLabelByAIDLID (articleId, labelId) {
+    console.log(articleId, labelId)
+    const statement = `SELECT * FROM article_label WHERE article_id = ? and label_id = ?;`
+    const result = await connection.execute(statement, [articleId, labelId])
+    return result[0].length != 0 ? true : false
+  }
 }
 
 module.exports = new LabelService()

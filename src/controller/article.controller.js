@@ -57,10 +57,26 @@ class ArticleController {
 
   async update (ctx, next) {
     const { id } = ctx.params
-    const { title, condec, content, filename, mimetype } = ctx.request.body
-    console.log(content)
+    const { title, condec, content, filename, mimetype, checkList } = ctx.request.body
     try {
       const result = await articleService.update(id, title, condec, content, filename, mimetype)
+      // 设置所属标签
+      let labelNameInfo = ''
+      let labelNameId = ''
+      let isExist = ''
+      console.log(checkList)
+      for (let name of checkList) {
+        labelNameInfo = await labelService.getLabelByName(name)
+        // label表的id
+        labelNameId = labelNameInfo[0].id
+        // 返回布尔值，判断文章是否已经归属该标签
+        isExist = await labelService.getLabelByAIDLID(id, labelNameId)
+        // 不存在就创建一条
+        if (!isExist) {
+          labelService.setArticleLabel(id, labelNameId, name)
+        }
+      }
+
       ctx.body = {
         status: 200,
         message: "修改成功！"
@@ -76,7 +92,6 @@ class ArticleController {
 
   async deleteArticle (ctx, next) {
     const { id } = ctx.params
-    console.log(id)
     try {
       const result = await articleService.deleteArticle(id)
       ctx.body = {
@@ -102,7 +117,6 @@ class ArticleController {
 
   // 增加文章时回显图片
   async fileAddInfo (ctx, next) {
-    console.log("增加文章时回显图片")
     let { filename, mimetype } = ctx.params
     console.log(mimetype)
     ctx.response.set('content-type', mimetype)
@@ -115,6 +129,17 @@ class ArticleController {
     const fileInfo = await fileService.getMainPicByFilename(filename)
     ctx.response.set('content-type', fileInfo.mimetype)
     ctx.body = fs.createReadStream(`${MAIN_PICTURE_PATH}/${filename}`)
+  }
+
+  // 根据标签名称获取文章
+  async getArticleByLabelName (ctx, next) {
+    let { tag } = ctx.query
+    const result = await articleService.getArticleByLabelName(tag)
+    const list = []
+    for (let item of result) {
+      list.push(item.blogs[0])
+    }
+    ctx.body = list
   }
 
 }
