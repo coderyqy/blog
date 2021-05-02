@@ -1,7 +1,7 @@
 const fileService = require('../service/file.service')
 const userService = require('../service/user.service')
 const { AVATAR_PATH } = require('../constants/file-path')
-const { APP_HOST, APP_PORT } = require('../app/config')
+const { APP_HOST, APP_PORT, APP_IMAGE_UQL } = require('../app/config')
 
 class FileController {
   async saveAvatarInfo (ctx, next) {
@@ -22,11 +22,10 @@ class FileController {
     const files = ctx.req.files
     const { articleId } = ctx.params
     const { filename, mimetype, size } = files[0]
-    console.log()
     await fileService.createFile(filename, mimetype, size, articleId)
     ctx.body = {
       status: 200,
-      imgUrl: `http://localhost:8888/article/image/${filename}`,
+      imgUrl: `${APP_IMAGE_UQL}/article/image/${filename}`,
     }
   }
 
@@ -37,7 +36,7 @@ class FileController {
     console.log(filename, mimetype, size)
     ctx.body = {
       status: 200,
-      imgUrl: `http://localhost:8888/article/imageadd/${filename}?mimetype=${mimetype}`,
+      imgUrl: `${APP_IMAGE_UQL}/article/imageadd/${filename}?mimetype=${mimetype}`,
     }
   }
 

@@ -11,6 +11,7 @@ const PUBLIC_KEY = fs.readFileSync(path.resolve(__dirname, './keys/public.key'))
 // 解构
 module.exports = {
   APP_PORT,
+  APP_IMAGE_UQL
 } = process.env
 
 module.exports.PRIVATE_KEY = PRIVATE_KEY
