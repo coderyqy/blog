@@ -33,7 +33,6 @@ class FileController {
   saveAddPictureInfo (ctx, next) {
     const files = ctx.req.files
     const { filename, mimetype, size } = files[0]
-    console.log(filename, mimetype, size)
     ctx.body = {
       status: 200,
       imgUrl: `${APP_IMAGE_UQL}:${APP_PORT}/article/imageadd/${filename}?mimetype=${mimetype}`,
