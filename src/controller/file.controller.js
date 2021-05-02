@@ -25,7 +25,7 @@ class FileController {
     await fileService.createFile(filename, mimetype, size, articleId)
     ctx.body = {
       status: 200,
-      imgUrl: `${APP_IMAGE_UQL}/article/image/${filename}`,
+      imgUrl: `${APP_IMAGE_UQL}:${APP_PORT}/article/image/${filename}`,
     }
   }
 
@@ -36,7 +36,7 @@ class FileController {
     console.log(filename, mimetype, size)
     ctx.body = {
       status: 200,
-      imgUrl: `${APP_IMAGE_UQL}/article/imageadd/${filename}?mimetype=${mimetype}`,
+      imgUrl: `${APP_IMAGE_UQL}:${APP_PORT}/article/imageadd/${filename}?mimetype=${mimetype}`,
     }
   }
 
