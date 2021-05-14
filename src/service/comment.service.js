@@ -24,6 +24,21 @@ class CommentService {
     }
   }
 
+  async getAllComment () {
+    try {
+      const statement = `
+      SELECT c.id id,content,c.article_id articleId,c.user_id userId,c.comment_id commentId, c.createAt,
+      JSON_OBJECT('id', feu.id, 'name', feu.uname, 'email', feu.email) commentuser
+      FROM comment c
+      LEFT JOIN font_end_user feu  ON c.user_id = feu.id
+      order by c.id desc;`
+      const result = await connection.execute(statement)
+      return result[0]
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   // 获取文章的评论 
   async getArticleComment (id) {
     const statement = `

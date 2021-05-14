@@ -1,8 +1,10 @@
 const Router = require("koa-router")
 
 const commentRouter = new Router({ prefix: '/comment' })
-const { create, replyComment, getArticleCommentList, getReplyUserName } = require('../controller/comment.controller')
+const { getAllArticleComment, create, replyComment, getArticleCommentList, getReplyUserName } = require('../controller/comment.controller')
 
+// 获取所有评论
+commentRouter.get('/', getAllArticleComment)
 // 评论
 commentRouter.post('/:articleId', create)
 // 回复评论

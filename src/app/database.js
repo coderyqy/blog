@@ -1,6 +1,7 @@
+// 应用所需的包
 const mysql = require("mysql2")
 const config = require('./config')
-
+// 创建连接池
 const connections = mysql.createPool({
   host: config.MYSQL_HOST,
   port: config.MYSQL_PORT,
@@ -8,7 +9,7 @@ const connections = mysql.createPool({
   user: config.MYSQL_USER,
   password: config.MYSQL_PASSWORD
 })
-
+// 连接数据库
 connections.getConnection((err, conn) => {
   conn.connect((err) => {
     if (err) {
@@ -18,5 +19,5 @@ connections.getConnection((err, conn) => {
     }
   })
 })
-
+// 导出接口
 module.exports = connections.promise()

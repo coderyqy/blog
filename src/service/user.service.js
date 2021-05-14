@@ -5,14 +5,14 @@ class UserService {
     console.log("service")
     // 后端
     const { name, password } = user
-    const statement = `INSERT INTO users (name, password) VALUES (?,?);`
+    const statement = `INSERT INTO admin (name, password) VALUES (?,?);`
     const result = await connection.execute(statement, [name, password])
     return result
   }
 
   async getUserByName (name) {
     // 根据 用户名 查询数据库
-    const statement = `SELECT * FROM users WHERE name = ?;`
+    const statement = `SELECT * FROM admin WHERE name = ?;`
     const result = await connection.execute(statement, [name])
     return result[0]
   }

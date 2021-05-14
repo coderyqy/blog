@@ -1,17 +1,16 @@
-const commentService = require("../service/comment.service")
+const messageService = require("../service/message.service")
 const userService = require("../service/user.service")
 
-class commentController {
-  // 获取所有文章的评论
-  async getAllArticleComment (ctx, next) {
-    const result = await commentService.getAllComment()
+class MessageController {
+  //获取所有文章的评论
+  async getAllArticleMessage (ctx, next) {
+    const result = await messageService.getAllMessage()
     console.log(result)
     ctx.body = result
   }
 
   // 发布评论
   async create (ctx, next) {
-    const { articleId } = ctx.params
     const { name, content } = ctx.request.body
     // 查找用户
     let userId = ''
@@ -24,17 +23,16 @@ class commentController {
       userId = userInfo[0].id
     }
     // 创建评论
-    const result = await commentService.create(content, articleId, userId)
+    const result = await messageService.create(content, userId)
     // 返回该文章的所有评论
-    const commentlist = await commentService.getArticleComment(articleId)
-    ctx.body = commentlist
+    const messagelist = await messageService.getAllMessage()
+    ctx.body = messagelist
     next()
   }
 
   // 回复评论
-  async replyComment (ctx, next) {
-    const { articleId } = ctx.params
-    const { name, content, commentId } = ctx.request.body
+  async replyMessage (ctx, next) {
+    const { name, content, messageId } = ctx.request.body
     // 查找用户
     let userId = ''
     const userInfo = await userService.getFontEndUserByName(name)
@@ -46,18 +44,17 @@ class commentController {
       userId = userInfo[0].id
     }
     // 回复评论
-    await commentService.reply(content, articleId, userId, commentId)
+    await messageService.reply(content, userId, messageId)
     // 返回该文章的所有评论
-    const commentlist = await commentService.getArticleComment(articleId)
-    ctx.body = commentlist
+    const messagelist = await messageService.getAllMessage()
+    ctx.body = messagelist
     next()
   }
 
   // 获取文章的所有评论
-  async getArticleCommentList (ctx, next) {
+  async getArticleMessageList (ctx, next) {
     try {
-      const { articleId } = ctx.params
-      const result = await commentService.getArticleComment(articleId)
+      const result = await messageService.getAllMessage()
       ctx.body = result
       next()
     } catch (error) {
@@ -67,12 +64,12 @@ class commentController {
 
   // 获取被评论的人的名字
   async getReplyUserName (ctx, next) {
+    console.log("-----------getReplyUserName------")
     try {
-      const { commentId } = ctx.params
-      console.log(commentId)
-      const result = await commentService.getReplyUserNameByCommentId(commentId)
-      const name = result[0].commentuser.name
-      console.log("name:" + name)
+      const { messageId } = ctx.params
+      console.log(messageId)
+      const result = await messageService.getReplyUserNameByMessageId(messageId)
+      const name = result[0].messageuser.name
       ctx.body = {
         name
       }
@@ -83,4 +80,4 @@ class commentController {
   }
 }
 
-module.exports = new commentController()
+module.exports = new MessageController()

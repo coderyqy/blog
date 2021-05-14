@@ -3,6 +3,7 @@ const connection = require('../app/database')
 class ArticelService {
   // 创建文章
   async create (title, condec, content, image, mimetype, userId) {
+    console.log(title)
     const statement = `INSERT INTO article (title, condec, content, image, mimetype, user_id) VALUES(?, ?, ?, ?, ?, ?);`
     const result = await connection.execute(statement, [title, condec, content, image, mimetype, userId])
     return result
