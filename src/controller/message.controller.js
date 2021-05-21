@@ -2,10 +2,10 @@ const messageService = require("../service/message.service")
 const userService = require("../service/user.service")
 
 class MessageController {
-  //获取所有文章的评论
+  //获取所有留言
   async getAllArticleMessage (ctx, next) {
+    console.log("-------------")
     const result = await messageService.getAllMessage()
-    console.log(result)
     ctx.body = result
   }
 
@@ -64,10 +64,8 @@ class MessageController {
 
   // 获取被评论的人的名字
   async getReplyUserName (ctx, next) {
-    console.log("-----------getReplyUserName------")
     try {
       const { messageId } = ctx.params
-      console.log(messageId)
       const result = await messageService.getReplyUserNameByMessageId(messageId)
       const name = result[0].messageuser.name
       ctx.body = {

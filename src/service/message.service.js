@@ -26,7 +26,7 @@ class MessageService {
   async getAllMessage () {
     try {
       const statement = `
-      SELECT c.id id,content,c.user_id userId,c.message_id commentId, c.createAt,
+      SELECT c.id id,content,c.user_id userId,c.message_id commentId,c.is_status isStatus, c.createAt,
       JSON_OBJECT('id', feu.id, 'name', feu.uname, 'email', feu.email) commentuser
       FROM message c
       LEFT JOIN font_end_user feu ON c.user_id = feu.id

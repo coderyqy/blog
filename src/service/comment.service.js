@@ -27,7 +27,7 @@ class CommentService {
   async getAllComment () {
     try {
       const statement = `
-      SELECT c.id id,content,c.article_id articleId,c.user_id userId,c.comment_id commentId, c.createAt,
+      SELECT c.id id,content,c.article_id articleId,c.user_id userId,c.comment_id commentId, c.is_status isStatus,c.createAt,
       JSON_OBJECT('id', feu.id, 'name', feu.uname, 'email', feu.email) commentuser
       FROM comment c
       LEFT JOIN font_end_user feu  ON c.user_id = feu.id
@@ -52,7 +52,7 @@ class CommentService {
     return result[0]
   }
 
-  async getReplyUserNameByCommentId (commentId,) {
+  async getReplyUserNameByCommentId (commentId) {
     try {
       const statement = `
       SELECT c.id id,c.user_id userId,c.comment_id commentId,
@@ -66,6 +66,12 @@ class CommentService {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  async deleteCommentByCommentId (commentId) {
+    const statement = `DELETE FROM comment WHERE id = ?`
+    const result = await connection.execute(statement, [commentId])
+    return result
   }
 }
 

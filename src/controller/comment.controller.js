@@ -5,7 +5,6 @@ class commentController {
   // 获取所有文章的评论
   async getAllArticleComment (ctx, next) {
     const result = await commentService.getAllComment()
-    console.log(result)
     ctx.body = result
   }
 
@@ -69,15 +68,32 @@ class commentController {
   async getReplyUserName (ctx, next) {
     try {
       const { commentId } = ctx.params
-      console.log(commentId)
       const result = await commentService.getReplyUserNameByCommentId(commentId)
       const name = result[0].commentuser.name
-      console.log("name:" + name)
       ctx.body = {
         name
       }
       next()
     } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // 删除评论
+  async deleteComment (ctx, next) {
+    try {
+      const { commentId } = ctx.params
+      const result = await commentService.deleteCommentByCommentId(commentId)
+      ctx.body = {
+        status: 200,
+        message: '删除成功'
+      }
+      next()
+    } catch (error) {
+      ctx.body = {
+        status: 500,
+        message: '删除失败'
+      }
       console.log(error)
     }
   }

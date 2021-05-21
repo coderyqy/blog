@@ -64,7 +64,6 @@ class ArticleController {
       let labelNameInfo = ''
       let labelNameId = ''
       let isExist = ''
-      console.log(checkList)
       for (let name of checkList) {
         labelNameInfo = await labelService.getLabelByName(name)
         // label表的id
@@ -118,7 +117,6 @@ class ArticleController {
   // 增加文章时回显图片
   async fileAddInfo (ctx, next) {
     let { filename, mimetype } = ctx.params
-    console.log(mimetype)
     ctx.response.set('content-type', mimetype)
     ctx.body = fs.createReadStream(`${PICTURE_PATH}/${filename}`)
   }
