@@ -1,15 +1,15 @@
 const messageService = require("../service/message.service")
 const userService = require("../service/user.service")
+const { dayFormat } = require("../middleware/day.middleware")
 
 class MessageController {
   //获取所有留言
   async getAllArticleMessage (ctx, next) {
-    console.log("-------------")
     const result = await messageService.getAllMessage()
     ctx.body = result
   }
 
-  // 发布评论
+  // 发布留言
   async create (ctx, next) {
     const { name, content } = ctx.request.body
     // 查找用户
@@ -22,7 +22,7 @@ class MessageController {
     } else {
       userId = userInfo[0].id
     }
-    // 创建评论
+    // 创建留言
     const result = await messageService.create(content, userId)
     // 返回该文章的所有评论
     const messagelist = await messageService.getAllMessage()
@@ -30,7 +30,7 @@ class MessageController {
     next()
   }
 
-  // 回复评论
+  // 回复留言
   async replyMessage (ctx, next) {
     const { name, content, messageId } = ctx.request.body
     // 查找用户
@@ -51,10 +51,13 @@ class MessageController {
     next()
   }
 
-  // 获取文章的所有评论
+  // 获取的所有留言
   async getArticleMessageList (ctx, next) {
     try {
       const result = await messageService.getAllMessage()
+      for (let item of result) {
+        item.createAt = dayFormat(item.createAt)
+      }
       ctx.body = result
       next()
     } catch (error) {

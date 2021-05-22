@@ -5,6 +5,8 @@ const fileService = require("../service/file.service")
 const labelService = require("../service/label.service")
 const { PICTURE_PATH, MAIN_PICTURE_PATH } = require('../constants/file-path')
 
+const { dayFormat } = require("../middleware/day.middleware")
+
 class ArticleController {
   async create (ctx, next) {
     const { title, condec, content, filename, mimetype, checkList } = ctx.request.body
@@ -32,9 +34,13 @@ class ArticleController {
     }
   }
 
+  // 获取所有文章
   async getAllArticle (ctx, next) {
     try {
       const result = await articleService.getAllArticle()
+      for (let item of result[0]) {
+        item.createAt = dayFormat(item.createAt)
+      }
       ctx.body = {
         result
       }

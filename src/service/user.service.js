@@ -20,6 +20,22 @@ class UserService {
   /*
     前端用户
   */
+  // 获取所有用户
+  async getAllFontEndUser () {
+    // 根据 用户名 查询数据库
+    const statement = `SELECT * FROM font_end_user;`
+    const result = await connection.execute(statement)
+    return result[0]
+  }
+
+  // 删除用户
+  async deleteFontEnd (fontEndId) {
+    const statement = `DELETE FROM font_end_user WHERE id = ?`
+    const result = await connection.execute(statement, [fontEndId])
+    return result
+  }
+
+  // 根据用户名获取
   async getFontEndUserByName (name) {
     // 根据 用户名 查询数据库
     const statement = `SELECT * FROM font_end_user WHERE uname = ?;`

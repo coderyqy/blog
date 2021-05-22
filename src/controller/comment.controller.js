@@ -1,11 +1,19 @@
 const commentService = require("../service/comment.service")
 const userService = require("../service/user.service")
+const { dayFormat } = require("../middleware/day.middleware")
 
 class commentController {
   // 获取所有文章的评论
   async getAllArticleComment (ctx, next) {
-    const result = await commentService.getAllComment()
-    ctx.body = result
+    try {
+      const result = await commentService.getAllComment()
+      for (let item of result) {
+        item.createAt = dayFormat(item.createAt)
+      }
+      ctx.body = result
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   // 发布评论
